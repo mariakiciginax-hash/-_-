@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>БУЛГАКОВ: ТЕСТ / МИСТИКА & МАСТЕР</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0e0c12;
+            font-family: 'Impact', 'Futura', 'Trebuchet MS', 'Arial Black', 'Georgia', serif;
+            color: #eeddcc;
+            padding: 30px 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at 10% 20%, rgba(90, 40, 70, 0.2) 2%, transparent 2.5%),
+                              radial-gradient(circle at 85% 45%, rgba(150, 70, 100, 0.2) 1.5%, transparent 2%);
+            background-size: 48px 48px, 32px 32px;
+        }
+
+        .test-card {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            background: #1a1622;
+            border: 2px solid #aa6f9e;
+            box-shadow: 0 0 0 2px #2c1e2a, 12px 12px 20px rgba(0,0,0,0.6), inset 0 0 20px rgba(170, 111, 158, 0.1);
+            padding: 32px 34px 40px;
+            transition: 0.2s;
+        }
+
+        .hero {
+            border-bottom: 3px solid #b5679a;
+            padding-bottom: 18px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 15px;
+            text-shadow: 2px 2px 0 #2c0e24;
+        }
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #f5e3d4;
+            line-height: 1.2;
+            font-weight: 800;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+        }
+        h1 span {
+            color: #dd88aa;
+            display: inline-block;
+            letter-spacing: 5px;
+            text-shadow: 0 0 5px #aa5588;
+        }
+        .q-counter {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: #2a1a2a;
+            color: #e7b9d0;
+            padding: 6px 18px;
+            font-family: monospace;
+            letter-spacing: 2px;
+            border: 1px solid #aa6f9e;
+            box-shadow: inset 0 0 6px #ffb7e0, 0 2px 4px black;
+        }
+
+        .progress-area {
+            margin-bottom: 40px;
+        }
+        .progress-bar-bg {
+            background: #2e2538;
+            height: 12px;
+            border: 1px solid #9b6b8a;
+            box-shadow: inset 0 0 4px #00000066;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #c06a9a, #eaa5c0);
+            width: 0%;
+            height: 100%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 6px #ffb0d0;
+        }
+
+        .question-block {
+            margin-bottom: 32px;
+        }
+        .question-text {
+            font-size: 1.9rem;
+            line-height: 1.3;
+            font-weight: 700;
+            margin-bottom: 32px;
+            padding-left: 20px;
+            border-left: 8px solid #b5679a;
+            letter-spacing: 0.5px;
+            word-break: break-word;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: #f7e5dc;
+        }
+
+        .answers-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 44px;
+        }
+        .answer-item {
+            background: #211c2c;
+            border: 1px solid #664a60;
+            padding: 16px 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            cursor: pointer;
+            transition: all 0.15s linear;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+        .answer-item:hover {
+            background: #3e2a3c;
+            border-color: #e29bc2;
+            transform: translateX(8px) scale(1.01);
+            box-shadow: 0 0 12px #cc88aa88;
+        }
+        .answer-letter {
+            font-weight: 900;
+            font-size: 1.7rem;
+            background: #2f1e2a;
+            color: #f3bfda;
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            border: 1px solid #aa7799;
+        }
+        .answer-item:hover .answer-letter {
+            background: #aa5588;
+            color: #0c0712;
+            border-color: #fad5f0;
+            box-shadow: 0 0 6px #ffc0e0;
+        }
+        .answer-text {
+            flex: 1;
+        }
+        .answer-item.selected {
+            background: #632c55;
+            color: #faf0e6;
+            border: 1px solid #ffb3da;
+            box-shadow: 0 0 14px #ff98c0;
+        }
+        .answer-item.selected .answer-letter {
+            background: #fbe2f0;
+            color: #2d1326;
+            border-color: #ffffff;
+        }
+
+        .nav-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 16px;
+        }
+        .nav-btn {
+            background: #1f182a;
+            border: 2px solid #a36b89;
+            padding: 14px 28px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-family: inherit;
+            color: #fad9ec;
+            cursor: pointer;
+            transition: 0.1s linear;
+            flex: 1;
+            text-align: center;
+            letter-spacing: 2px;
+            box-shadow: 0 1px 5px black;
+        }
+        .nav-btn:hover:not(:disabled) {
+            background: #6e3c62;
+            color: #1f1220;
+            border-color: #ffc0e4;
+            box-shadow: 0 0 12px #e095c0;
+            transform: scale(0.98);
+        }
+        .nav-btn:disabled {
+            opacity: 0.35;
+            border-color: #594555;
+            cursor: not-allowed;
+        }
+
+        /* мистический портрет */
+        .mystic-portrait {
+            margin: 0 0 32px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #aa6f9e;
+            padding: 12px;
+            background: #0f0b16;
+            box-shadow: 0 0 16px rgba(170, 100, 150, 0.4), inset 0 0 0 1px #2f1e2a;
+        }
+        .portrait-inner {
+            max-width: 320px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+        .portrait-inner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: sepia(0.5) contrast(1.1) brightness(0.95);
+            border: 1px solid #c894b0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+            transition: 0.2s;
+            background: #2a1f2e;
+            border-radius: 4px;
+        }
+        .portrait-inner img:hover {
+            filter: sepia(0.2) contrast(1.2) brightness(1.02);
+            box-shadow: 0 0 12px #dd99bb;
+        }
+        .portrait-caption {
+            margin-top: 12px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #cfa7c2;
+            letter-spacing: 1px;
+            border-top: 1px dashed #b06f96;
+            padding-top: 8px;
+            display: inline-block;
+        }
+        .portrait-caption a {
+            color: #e7bfda;
+            text-decoration: none;
+            border-bottom: 1px dotted #aa7799;
+        }
+        .portrait-caption a:hover {
+            color: #ffecf5;
+            border-bottom: 1px solid #ffb0da;
+        }
+
+        .result-sheet {
+            background: #181121;
+            border: 2px solid #bf7faa;
+            padding: 28px 24px;
+            margin: 20px 0 30px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(170, 85, 136, 0.4), inset 0 0 20px rgba(0,0,0,0.4);
+            position: relative;
+        }
+        .result-sheet::before {
+            content: "❦";
+            font-size: 36px;
+            color: #b06f96;
+            position: absolute;
+            top: -18px;
+            left: 20px;
+            opacity: 0.7;
+        }
+        .result-sheet::after {
+            content: "❦";
+            font-size: 36px;
+            color: #b06f96;
+            position: absolute;
+            bottom: -18px;
+            right: 20px;
+            opacity: 0.7;
+        }
+        .score-big {
+            font-size: 4.8rem;
+            font-weight: 900;
+            color: #e6b0d0;
+            letter-spacing: 6px;
+            text-shadow: 0 0 8px #9b4b6e;
+        }
+        .status-line {
+            font-size: 1.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 20px 0 12px;
+            letter-spacing: 2px;
+            color: #f5cfdf;
+        }
+        .restart-button {
+            background: #1f1226;
+            color: #ebc6db;
+            border: 2px solid #ac6b8e;
+            padding: 14px 32px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 24px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 280px;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: inherit;
+            transition: 0.1s;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .restart-button:hover {
+            background: #a05c85;
+            color: #100b18;
+            border-color: #ffdfed;
+            box-shadow: 0 0 12px #ffb8e0;
+        }
+        .answers-details {
+            margin-top: 28px;
+            text-align: left;
+            background: #0f0c18;
+            padding: 18px;
+            border-left: 6px solid #b5679a;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #dbccd4;
+        }
+        details summary {
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #eabeda;
+        }
+        details[open] summary {
+            color: #ffddf0;
+        }
+
+        /* блок с видео — RUTUBE */
+        .video-block {
+            margin-top: 48px;
+            border-top: 3px dashed #a45f85;
+            padding-top: 32px;
+        }
+        .video-title {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Impact', 'Futura', sans-serif;
+            color: #e2b9d4;
+            text-shadow: 0 0 4px #5a2d4a;
+        }
+        .video-wrapper {
+            background: #0d0916;
+            border: 1px solid #ac6d92;
+            padding: 8px;
+            box-shadow: 0 0 20px rgba(180, 100, 140, 0.3);
+            position: relative;
+        }
+        .video-wrapper iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: none;
+            display: block;
+            background: #000;
+        }
+        .video-caption {
+            text-align: center;
+            margin-top: 12px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #b590ae;
+        }
+        .video-caption a {
+            color: #e7bfda;
+            text-decoration: none;
+            border-bottom: 1px dotted #aa7799;
+        }
+
+        .feedback-block {
+            margin-top: 48px;
+            border-top: 3px dashed #a45f85;
+            padding-top: 32px;
+            position: relative;
+        }
+        .feedback-title {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Impact', 'Futura', sans-serif;
+            color: #e2b9d4;
+            text-shadow: 0 0 4px #5a2d4a;
+        }
+        .form-wrapper {
+            background: #0d0916;
+            border: 1px solid #ac6d92;
+            padding: 8px;
+            box-shadow: 0 0 20px rgba(180, 100, 140, 0.3);
+        }
+        .form-wrapper iframe {
+            width: 100%;
+            height: 620px;
+            border: none;
+            display: block;
+            background: #fdf7f0;
+        }
+
+        footer {
+            margin-top: 48px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-family: monospace;
+            border-top: 1px solid #513a4a;
+            padding-top: 24px;
+            color: #aa88a2;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 640px) {
+            .test-card {
+                padding: 20px 18px;
+            }
+            .question-text {
+                font-size: 1.4rem;
+            }
+            .answer-item {
+                padding: 12px 14px;
+                font-size: 0.95rem;
+            }
+            .answer-letter {
+                width: 38px;
+                height: 38px;
+                font-size: 1.3rem;
+            }
+            .nav-btn {
+                padding: 10px 14px;
+                font-size: 1rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+            .form-wrapper iframe {
+                height: 540px;
+            }
+            .portrait-inner {
+                max-width: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="test-card" id="bulgakovApp">
+    <div class="hero">
+        <h1>МИХАИЛ <span>БУЛГАКОВ</span><br>ТЕСТ • ТЬМА & СВЕТ</h1>
+        <div class="q-counter" id="stepCounter">1 / 7</div>
+    </div>
+    <div class="progress-area">
+        <div class="progress-bar-bg">
+            <div class="progress-fill" id="globalProgress"></div>
+        </div>
+    </div>
+
+    <!-- МИСТИЧЕСКИЙ ПОРТРЕТ БУЛГАКОВА -->
+    <div class="mystic-portrait">
+        <div class="portrait-inner">
+            <img 
+                src="https://dombulgakova.ru/wp-content/uploads/2020/04/mabylgakovfotopredostavlenomyzeem-e1585768582622-1038x1080.jpeg" 
+                alt="Михаил Булгаков — портрет из музея «Булгаковский дом»"
+                loading="lazy"
+                onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/9/9c/%D0%9C%D0%B8%D1%85%D0%B0%D0%B8%D0%BB-%D0%91%D1%83%D0%BB%D0%B3%D0%B0%D0%BA%D0%BE%D0%B2.jpg'"
+            >
+            <div class="portrait-caption">
+                ✦ М. А. Булгаков (1891–1940) ✦<br>
+                <a href="https://dombulgakova.ru" target="_blank" rel="noopener noreferrer">«Булгаковский дом» — Москва, мистическая квартира</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="dynamicPanel"></div>
+
+    <!-- ВИДЕОБЛОК — «Проклятие Мастера» с RUTUBE -->
+    <div class="video-block">
+        <div class="video-title">📺 ПРОКЛЯТИЕ МАСТЕРА</div>
+        <div class="video-wrapper">
+            <iframe 
+                src="https://rutube.ru/play/embed/e5488ef66d7e889ff00f278b2a3a5996" 
+                title="Х-версии. Громкие дела | Проклятие Мастера — мистика Булгакова"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="unsafe-url"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="video-caption">
+            🎬 «Х-версии. Громкие дела»: Проклятие Мастера — роман «Мастер и Маргарита» и дурная слава в актёрской среде<br>
+            <a href="https://rutube.ru/video/e5488ef66d7e889ff00f278b2a3a5996/" target="_blank" rel="noopener noreferrer">Смотреть на RUTUBE →</a>
+        </div>
+    </div>
+
+    <!-- GOOGLE ФОРМА -->
+    <div class="feedback-block">
+        <div class="feedback-title">🖋️ ПОДЕЛИТЬСЯ ОТКРОВЕНИЕМ</div>
+        <div class="form-wrapper">
+            <iframe 
+                src="https://docs.google.com/forms/d/e/1FAIpQLSfTwIYlybjh9qpM34svWLjezZ2Iarbr0MuVtyYm7db5VuDTMg/viewform?embedded=true" 
+                title="Мистическая форма Булгакова — оставить след"
+                width="100%" 
+                height="620" 
+                frameborder="0" 
+                marginheight="0" 
+                marginwidth="0">
+                Загрузка сакральной формы...
+            </iframe>
+        </div>
+    </div>
+
+    <footer>
+        «Мастер и Маргарита» — тайный архив 2026 • свита Воланда приветствует
+    </footer>
+</div>
+
+<script>
+    // ВОПРОСЫ О БУЛГАКОВЕ
+    const QUIZ_DATA = [
+        { text: "В каком городе родился Михаил Булгаков?", options: ["Киев", "Москва", "Саратов", "Орёл"], correct: "Киев" },
+        { text: "Какой роман принёс Булгакову мировую славу, но был опубликован спустя десятилетия после смерти?", options: ["«Мастер и Маргарита»", "«Белая гвардия»", "«Собачье сердце»", "«Театральный роман»"], correct: "«Мастер и Маргарита»" },
+        { text: "Кто из этих персонажей не является героем «Мастера и Маргариты»?", options: ["Коровьев (Фагот)", "Кот Бегемот", "Азазелло", "Зойка"], correct: "Зойка" },
+        { text: "Какая знаменитая фраза принадлежит Воланду в романе «Мастер и Маргарита»?", options: ["«Рукописи не горят»", "«Аннушка уже разлила масло»", "«Никогда ничего не просите»", "«Свежесть бывает только первая»"], correct: "«Рукописи не горят»" },
+        { text: "Как называлась пьеса Булгакова, которая шла во МХАТе и вызвала резкую критику, но при этом имела огромный успех у зрителей?", options: ["«Дни Турбиных»", "«Зойкина квартира»", "«Багровый остров»", "«Кабала святош»"], correct: "«Дни Турбиных»" },
+        { text: "Кому Булгаков адресовал письмо с просьбой о выезде за границу, которое стало одним из самых отчаянных документов в его биографии?", options: ["И.В. Сталину", "Л.Д. Троцкому", "В.М. Молотову", "М. Горькому"], correct: "И.В. Сталину" },
+        { text: "Какое из этих произведений Булгакова напрямую связано с московскими похождениями дьявольской свиты и мотивом «нехорошей квартиры»?", options: ["«Мастер и Маргарита»", "«Роковые яйца»", "«Бег»", "«Иван Васильевич»"], correct: "«Мастер и Маргарита»" }
+    ];
+
+    let currentIdx = 0;
+    let userSelections = new Array(QUIZ_DATA.length).fill(null);
+    let testFinished = false;
+
+    const panel = document.getElementById("dynamicPanel");
+    const progressFill = document.getElementById("globalProgress");
+    const stepSpan = document.getElementById("stepCounter");
+
+    function updateGlobalMeta() {
+        const total = QUIZ_DATA.length;
+        const answered = userSelections.filter(v => v !== null).length;
+        let percent = testFinished ? 100 : (answered / total) * 100;
+        progressFill.style.width = `${percent}%`;
+        if (!testFinished) {
+            stepSpan.innerText = `${currentIdx+1} / ${total}`;
+        } else {
+            stepSpan.innerText = `${total} / ${total}`;
+        }
+    }
+
+    function render() {
+        if (testFinished) {
+            renderResults();
+            return;
+        }
+        renderCurrentQuestion();
+        updateGlobalMeta();
+    }
+
+    function renderCurrentQuestion() {
+        const q = QUIZ_DATA[currentIdx];
+        const selectedVal = userSelections[currentIdx];
+        const letters = ["A", "B", "C", "D"];
+
+        const optionsHTML = q.options.map((opt, idx) => {
+            const isSelected = (selectedVal === opt);
+            const selectedClass = isSelected ? "selected" : "";
+            return `
+                <div class="answer-item ${selectedClass}" data-opt="${escapeHtml(opt)}">
+                    <div class="answer-letter">${letters[idx]}</div>
+                    <div class="answer-text">${escapeHtml(opt)}</div>
+                </div>
+            `;
+        }).join('');
+
+        const isLast = (currentIdx === QUIZ_DATA.length - 1);
+        const nextLabel = isLast ? "ПРИЗВАТЬ ФИНАЛ" : "ДАЛЕЕ →";
+
+        const navigation = `
+            <div class="nav-row">
+                <button class="nav-btn" id="prevQuestionBtn" ${currentIdx === 0 ? 'disabled' : ''}>← НАЗАД</button>
+                <button class="nav-btn" id="nextQuestionBtn">${nextLabel}</button>
+            </div>
+        `;
+
+        const fullHtml = `
+            <div class="question-block">
+                <div class="question-text">✦ ${escapeHtml(q.text)} ✦</div>
+                <div class="answers-grid" id="answersContainer">
+                    ${optionsHTML}
+                </div>
+                ${navigation}
+            </div>
+        `;
+        panel.innerHTML = fullHtml;
+
+        const answerDivs = document.querySelectorAll('.answer-item');
+        answerDivs.forEach(div => {
+            div.addEventListener('click', () => {
+                const chosen = div.getAttribute('data-opt');
+                if (chosen) {
+                    userSelections[currentIdx] = chosen;
+                    renderCurrentQuestion();
+                }
+            });
+        });
+
+        const prevBtn = document.getElementById('prevQuestionBtn');
+        const nextBtn = document.getElementById('nextQuestionBtn');
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (currentIdx > 0) {
+                    currentIdx--;
+                    render();
+                }
+            });
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                if (userSelections[currentIdx] === null) {
+                    alert("❮ ТЕНЬ ТРЕБУЕТ ОТВЕТА ❯ Выберите вариант, иначе Воланд не примет выбор.");
+                    return;
+                }
+                if (isLast) {
+                    testFinished = true;
+                    render();
+                } else {
+                    currentIdx++;
+                    render();
+                }
+            });
+        }
+    }
+
+    function renderResults() {
+        let correctCount = 0;
+        for (let i = 0; i < QUIZ_DATA.length; i++) {
+            if (userSelections[i] === QUIZ_DATA[i].correct) correctCount++;
+        }
+
+        let statusMsg = "";
+        let epitaph = "";
+        if (correctCount <= 2) {
+            statusMsg = "ТЕНЬ ЗАБЛУЖДЕНИЯ";
+            epitaph = "«Никогда и ничего не просите... особенно у тех, кто сильнее вас» — перечитайте Булгакова.";
+        } else if (correctCount <= 5) {
+            statusMsg = "МАСТЕР, НО НЕ ДО КОНЦА";
+            epitaph = "Вы приблизились к истине, но Воланд ещё испытывает вас. Изучите тайны его романов глубже.";
+        } else {
+            statusMsg = "СВИТА ВОЛАНДА ПРИВЕТСТВУЕТ";
+            epitaph = "«Рукописи не горят» — вы доказали, что знаете мистическую вселенную Булгакова как свои пять пальцев. Бегемот доволен!";
+        }
+
+        const total = QUIZ_DATA.length;
+
+        const resultHtml = `
+            <div class="result-sheet">
+                <div class="score-big">${correctCount} / ${total}</div>
+                <div class="status-line">${statusMsg}</div>
+                <div style="font-size:1rem; margin: 14px 0; font-style: italic; color: #ddc2d4;">${epitaph}</div>
+                <button class="restart-button" id="restartTestId">⚡ ПРОЙТИ ЗАНОВО ⚡</button>
+            </div>
+            <div class="answers-details">
+                <details>
+                    <summary>📜 РАСКРЫТЬ ПРОТОКОЛЫ НЕЧИСТОЙ СИЛЫ (верные ответы)</summary>
+                    <div style="margin-top: 14px;">
+                        ${QUIZ_DATA.map((q, idx) => {
+                            const userAns = userSelections[idx] || "—";
+                            const isCorrect = (userAns === q.correct);
+                            const mark = isCorrect ? "✓" : "✗";
+                            return `<p style="margin: 12px 0; border-bottom:1px dotted #6a4a62; padding-bottom:8px;">
+                                <strong>${idx+1}. ${escapeHtml(q.text)}</strong><br>
+                                <span style="color:${isCorrect ? '#e5b8d0' : '#d995b0'}">${mark} Ваш ответ: ${escapeHtml(userAns)}</span><br>
+                                <span style="color:#f4bedf;">➤ Мастер утверждает: ${escapeHtml(q.correct)}</span>
+                            </p>`;
+                        }).join('')}
+                    </div>
+                </details>
+            </div>
+        `;
+        panel.innerHTML = resultHtml;
+        
+        const restartBtn = document.getElementById('restartTestId');
+        if (restartBtn) {
+            restartBtn.addEventListener('click', () => {
+                currentIdx = 0;
+                userSelections = new Array(QUIZ_DATA.length).fill(null);
+                testFinished = false;
+                render();
+            });
+        }
+        updateGlobalMeta();
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    render();
+</script>
+</body>
+</html>
